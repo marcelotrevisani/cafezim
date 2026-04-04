@@ -2,6 +2,7 @@ import SwiftUI
 
 public struct MenuBarView: View {
     @EnvironmentObject var sleepManager: SleepManager
+    @StateObject private var launchAtLogin = LaunchAtLoginManager()
     @State private var selectedMode: DurationMode = .indefinite
     @State private var customHours: String = "1"
 
@@ -39,6 +40,10 @@ public struct MenuBarView: View {
             } else {
                 inactiveControls
             }
+
+            Divider()
+
+            Toggle("Launch at Login", isOn: $launchAtLogin.isEnabled)
 
             Divider()
 
