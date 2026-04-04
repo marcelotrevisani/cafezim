@@ -11,7 +11,7 @@ let package = Package(
             dependencies: [],
             path: "CafezimCore/Sources",
             linkerSettings: [
-                .linkedFramework("IOKit")
+                .linkedFramework("IOKit"),
             ]
         ),
         .executableTarget(
@@ -19,7 +19,7 @@ let package = Package(
             dependencies: ["CafezimCore"],
             path: "Cafezim/Sources",
             resources: [
-                .process("../Resources")
+                .process("../Resources"),
             ]
         ),
         .testTarget(

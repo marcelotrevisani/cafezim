@@ -1,8 +1,7 @@
-import XCTest
 import CafezimCore
+import XCTest
 
 final class SleepManagerTests: XCTestCase {
-
     var manager: SleepManager!
 
     override func setUp() {

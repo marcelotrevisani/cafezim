@@ -1,5 +1,5 @@
-import SwiftUI
 import CafezimCore
+import SwiftUI
 
 @main
 struct CafezimApp: App {
@@ -21,7 +21,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     static let shared = AppDelegate()
     let sleepManager = SleepManager()
 
-    func applicationDidFinishLaunching(_ notification: Notification) {
+    func applicationDidFinishLaunching(_: Notification) {
         NSApp.setActivationPolicy(.accessory)
     }
 }
