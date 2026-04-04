@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | head -1)/Contents/Developer"
+
+      - name: Run tests
+        run: swift test
+
+      - name: Build .app bundle
+        run: ./scripts/build-app.sh release
+
+      - name: Build DMG
+        run: ./scripts/build-dmg.sh ${{ github.event.release.tag_name }}
+
+      - name: Upload DMG to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/Cafezim-${{ github.event.release.tag_name }}.dmg
+
+  # Uncomment to open a PR to homebrew-cask official
+  # bump-homebrew-cask:
+  #   needs: build
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Update Homebrew
+  #       run: brew update
+  #
+  #     - name: Bump cask and open PR
+  #       env:
+  #         HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.HOMEBREW_GITHUB_API_TOKEN }}
+  #       run: |
+  #         brew bump-cask-pr cafezim \
+  #           --version "${{ github.event.release.tag_name }}" \
+  #           --no-browse

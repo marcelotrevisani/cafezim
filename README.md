@@ -12,6 +12,19 @@
 
 ---
 
+## Install
+
+### Homebrew
+
+```bash
+brew tap marceloduartetrevisani/tap
+brew install --cask cafezim
+```
+
+### Manual
+
+Download the latest `.dmg` from [Releases](https://github.com/marceloduartetrevisani/cafezim/releases), open it, and drag **Cafezim.app** to your Applications folder.
+
 ## Features
 
 - Prevents your Mac from sleeping and the display from turning off
@@ -21,7 +34,7 @@
 - Zero configuration, no Dock icon, minimal resource usage
 - Uses native macOS IOKit power assertions (`IOPMAssertionCreateWithName`)
 
-## Requirements
+## Requirements (for building from source)
 
 - macOS 13 (Ventura) or later
 - Xcode 15+ (for building)
@@ -37,6 +50,15 @@ just debug
 
 # Release build
 just release
+
+# Build .app bundle (release by default)
+just app
+
+# Build .app bundle in debug mode
+just app debug
+
+# Build DMG installer
+just dmg v0.1.0
 ```
 
 ### Without just
@@ -47,11 +69,19 @@ swift build
 
 # Release build
 swift build -c release
+
+# Build .app bundle
+./scripts/build-app.sh release
+
+# Build DMG
+./scripts/build-dmg.sh v0.1.0
 ```
 
-The built binary will be located at:
-- Debug: `.build/debug/Cafezim`
-- Release: `.build/release/Cafezim`
+The built artifacts will be located at:
+- Debug binary: `.build/debug/Cafezim`
+- Release binary: `.build/release/Cafezim`
+- App bundle: `build/Cafezim.app`
+- DMG: `build/Cafezim-<version>.dmg`
 
 ## Running
 
@@ -71,9 +101,12 @@ swift build && .build/debug/Cafezim &
 
 # Release
 swift build -c release && .build/release/Cafezim &
+
+# From .app bundle
+open build/Cafezim.app
 ```
 
-Once running, look for the coffee cup icon (**☕**) in your menu bar.
+Once running, look for the coffee cup icon in your menu bar.
 
 ## Testing
 
@@ -95,6 +128,17 @@ swift test
 > sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 > ```
 
+## Formatting
+
+```bash
+# Format all Swift files
+just format
+
+# Pre-commit hook (auto-formats on commit)
+brew install pre-commit swiftformat
+pre-commit install
+```
+
 ## How It Works
 
 Cafezim uses macOS IOKit power assertions to prevent sleep:
@@ -110,8 +154,11 @@ cafezim/
 ├── Package.swift                  # Swift Package Manager config
 ├── justfile                       # Build/run/test shortcuts
 ├── Cafezim/
-│   └── Sources/
-│       └── CafezimApp.swift       # App entry point, menu bar setup
+│   ├── Sources/
+│   │   └── CafezimApp.swift       # App entry point, menu bar setup
+│   └── Resources/
+│       ├── Info.plist              # App bundle metadata
+│       └── Entitlements.plist      # App entitlements
 ├── CafezimCore/
 │   └── Sources/
 │       ├── SleepManager.swift     # IOKit power assertion logic
@@ -119,10 +166,41 @@ cafezim/
 ├── CafezimTests/
 │   ├── SleepManagerTests.swift    # Core logic tests
 │   └── MenuBarViewTests.swift     # UI model tests
+├── scripts/
+│   ├── build-app.sh               # Builds Cafezim.app bundle
+│   ├── build-dmg.sh               # Packages .app into a .dmg
+│   └── create-icns.sh             # Generates .icns from SVG logo
 └── .github/
     └── workflows/
-        └── ci.yml                 # GitHub Actions CI pipeline
+        ├── ci.yml                 # CI: build + test on push/PR
+        └── release.yml            # Release: DMG + Homebrew tap update
 ```
+
+## Releasing
+
+Releases are automated via GitHub Actions. When you publish a new release:
+
+1. Tag your commit: `git tag v0.1.0 && git push origin v0.1.0`
+2. Create a GitHub release from the tag
+3. The pipeline automatically:
+   - Runs tests
+   - Builds `Cafezim.app` and packages it into a `.dmg`
+   - Uploads the `.dmg` to the GitHub release
+   - Updates the Homebrew cask formula in your tap repo
+
+### One-time setup for Homebrew tap
+
+1. Create the tap repo:
+   ```bash
+   gh repo create homebrew-tap --public
+   ```
+
+2. Create a fine-grained PAT with **Contents: Read and write** on `homebrew-tap`
+
+3. Add it as a secret:
+   ```bash
+   gh secret set HOMEBREW_TAP_TOKEN
+   ```
 
 ## License
 
