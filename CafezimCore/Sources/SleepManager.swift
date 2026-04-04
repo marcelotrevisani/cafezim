@@ -4,9 +4,9 @@ import IOKit.pwr_mgt
 /// Manages macOS sleep prevention using IOKit power assertions.
 public final class SleepManager: ObservableObject {
     @Published public private(set) var isActive = false
-    @Published public var durationHours: Double? = nil  // nil = indefinite
+    @Published public var durationHours: Double? = nil // nil = indefinite
 
-    public private(set) var assertionID: IOPMAssertionID = IOPMAssertionID(0)
+    public private(set) var assertionID: IOPMAssertionID = .init(0)
     private var timer: Timer?
     public private(set) var activatedAt: Date?
 
@@ -35,7 +35,7 @@ public final class SleepManager: ObservableObject {
         isActive = true
         activatedAt = Date()
 
-        if let hours = hours {
+        if let hours {
             scheduleTimer(hours: hours)
         }
     }

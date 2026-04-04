@@ -13,3 +13,7 @@ run: debug
 # Run all tests
 test:
     swift test
+
+# Format Swift source files
+format:
+    swiftformat .

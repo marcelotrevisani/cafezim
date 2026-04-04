@@ -1,5 +1,5 @@
-import SwiftUI
 import CafezimCore
+import SwiftUI
 
 @main
 struct CafezimApp: App {

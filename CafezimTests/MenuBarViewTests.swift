@@ -1,8 +1,7 @@
-import XCTest
 import CafezimCore
+import XCTest
 
 final class MenuBarViewTests: XCTestCase {
-
     // MARK: - DurationMode hoursForMode mapping
 
     func testDurationModeValues() {
@@ -17,7 +16,11 @@ final class MenuBarViewTests: XCTestCase {
         ]
 
         for (mode, expected) in cases {
-            XCTAssertEqual(expected, MenuBarView.hoursForMode(mode), "Mode \(mode.rawValue) should map to \(String(describing: expected))")
+            XCTAssertEqual(
+                expected,
+                MenuBarView.hoursForMode(mode),
+                "Mode \(mode.rawValue) should map to \(String(describing: expected))"
+            )
         }
     }
 
@@ -40,13 +43,13 @@ final class MenuBarViewTests: XCTestCase {
     /// Mirror of the view's hoursForMode logic for testing
     private func hoursForMode(_ mode: MenuBarView.DurationMode) -> Double? {
         switch mode {
-        case .indefinite: return nil
-        case .thirtyMinutes: return 0.5
-        case .oneHour: return 1
-        case .twoHours: return 2
-        case .fourHours: return 4
-        case .eightHours: return 8
-        case .custom: return nil // can't test custom input here
+        case .indefinite: nil
+        case .thirtyMinutes: 0.5
+        case .oneHour: 1
+        case .twoHours: 2
+        case .fourHours: 4
+        case .eightHours: 8
+        case .custom: nil // can't test custom input here
         }
     }
 }
