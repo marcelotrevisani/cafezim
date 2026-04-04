@@ -17,3 +17,15 @@ test:
 # Format Swift source files
 format:
     swiftformat .
+
+# Build Cafezim.app bundle (default: release)
+app config="release":
+    ./scripts/build-app.sh {{ config }}
+
+# Build DMG installer (default version: dev)
+dmg version="dev":
+    ./scripts/build-dmg.sh {{ version }}
+
+# Generate .icns icon from SVG (requires librsvg)
+icon:
+    ./scripts/create-icns.sh
