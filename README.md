@@ -17,13 +17,13 @@
 ### Homebrew
 
 ```bash
-brew tap marceloduartetrevisani/tap
+brew tap marcelotrevisani/tap
 brew install --cask cafezim
 ```
 
 ### Manual
 
-Download the latest `.dmg` from [Releases](https://github.com/marceloduartetrevisani/cafezim/releases), open it, and drag **Cafezim.app** to your Applications folder.
+Download the latest `.dmg` from [Releases](https://github.com/marcelotrevisani/cafezim/releases), open it, and drag **Cafezim.app** to your Applications folder.
 
 ## Features
 
