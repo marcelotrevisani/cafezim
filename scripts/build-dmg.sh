@@ -12,8 +12,8 @@ VERSION="${1:-dev}"
 DMG_NAME="Cafezim-${VERSION}.dmg"
 DMG_PATH="$BUILD_DIR/$DMG_NAME"
 
-# Build the app first
-"$SCRIPT_DIR/build-app.sh" release
+# Build the app first (pass version through so it's embedded in Info.plist)
+"$SCRIPT_DIR/build-app.sh" release "$VERSION"
 
 echo "Creating DMG..."
 
