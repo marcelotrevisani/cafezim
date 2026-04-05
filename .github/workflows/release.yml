@@ -82,6 +82,10 @@ jobs:
 
             app "Cafezim.app"
 
+            postflight do
+              system_command "/usr/bin/xattr", args: ["-cr", "#{appdir}/Cafezim.app"]
+            end
+
             zap trash: [
               "~/Library/Preferences/com.cafezim.app.plist",
             ]

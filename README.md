@@ -25,6 +25,11 @@ brew install --cask cafezim
 
 Download the latest `.dmg` from [Releases](https://github.com/marcelotrevisani/cafezim/releases), open it, and drag **Cafezim.app** to your Applications folder.
 
+> **Note:** The app is not notarized yet. If macOS says the app is "damaged", run:
+> ```bash
+> xattr -cr /Applications/Cafezim.app
+> ```
+
 ## Features
 
 - Prevents your Mac from sleeping and the display from turning off
