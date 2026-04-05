@@ -29,3 +29,15 @@ dmg version="dev":
 # Generate .icns icon from SVG (requires librsvg)
 icon:
     ./scripts/create-icns.sh
+
+# Install `cafezim` CLI launcher into PATH (default: /usr/local/bin)
+install prefix="/usr/local/bin":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    mkdir -p "{{ prefix }}"
+    ln -sf "$(pwd)/scripts/cafezim" "{{ prefix }}/cafezim"
+    echo "Installed: {{ prefix }}/cafezim -> $(pwd)/scripts/cafezim"
+
+# Uninstall `cafezim` CLI launcher
+uninstall prefix="/usr/local/bin":
+    rm -f "{{ prefix }}/cafezim"

@@ -1,0 +1,37 @@
+#!/bin/bash
+# Launches Cafezim. Tries installed app first, then local builds, then builds from source.
+set -euo pipefail
+
+# 1. Installed .app bundle
+if [ -d "/Applications/Cafezim.app" ]; then
+    exec open -a "Cafezim"
+fi
+
+# 2. Resolve repo location (follow symlinks to this script)
+SCRIPT_SRC="${BASH_SOURCE[0]}"
+while [ -h "$SCRIPT_SRC" ]; do
+    DIR="$(cd -P "$(dirname "$SCRIPT_SRC")" && pwd)"
+    SCRIPT_SRC="$(readlink "$SCRIPT_SRC")"
+    [[ "$SCRIPT_SRC" != /* ]] && SCRIPT_SRC="$DIR/$SCRIPT_SRC"
+done
+SCRIPT_DIR="$(cd -P "$(dirname "$SCRIPT_SRC")" && pwd)"
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+
+# 3. Local .app bundle
+if [ -d "$PROJECT_DIR/build/Cafezim.app" ]; then
+    exec open -a "$PROJECT_DIR/build/Cafezim.app"
+fi
+
+# 4. Prebuilt debug/release binary
+for cfg in release debug; do
+    BIN="$PROJECT_DIR/.build/$cfg/Cafezim"
+    if [ -x "$BIN" ]; then
+        exec "$BIN" &
+    fi
+done
+
+# 5. Build from source
+echo "Building Cafezim..."
+cd "$PROJECT_DIR"
+swift build
+exec "$PROJECT_DIR/.build/debug/Cafezim" &
