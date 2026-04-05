@@ -21,12 +21,15 @@ public struct MenuBarView: View {
     public var body: some View {
         VStack(spacing: 12) {
             // Header
-            HStack {
+            HStack(alignment: .firstTextBaseline) {
                 Image(systemName: sleepManager.isActive ? "cup.and.saucer.fill" : "cup.and.saucer")
                     .font(.title2)
                 Text("Cafezim")
                     .font(.headline)
                 Spacer()
+                Text("v\(appVersion)")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
             }
             .padding(.bottom, 4)
 
@@ -122,6 +125,10 @@ public struct MenuBarView: View {
     }
 
     // MARK: - Helpers
+
+    private var appVersion: String {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "dev"
+    }
 
     public static func hoursForMode(_ mode: DurationMode) -> Double? {
         switch mode {
