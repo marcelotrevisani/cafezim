@@ -19,8 +19,8 @@ format:
     swiftformat .
 
 # Build Cafezim.app bundle (default: release)
-app config="release":
-    ./scripts/build-app.sh {{ config }}
+app config="release" version="":
+    ./scripts/build-app.sh {{ config }} {{ version }}
 
 # Build DMG installer (default version: dev)
 dmg version="dev":
